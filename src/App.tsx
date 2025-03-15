@@ -10,6 +10,7 @@ import HomePage from './pages/HomePage';
 import MoviesPage from './pages/MoviesPage';
 import TVShowsPage from './pages/TVShowsPage';
 import WebSeriesPage from './pages/WebSeriesPage';
+import MovieDetailsPage from './pages/MovieDetailsPage';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,6 +27,7 @@ function App() {
           <Route path="/movies" element={<MoviesPage />} />
           <Route path="/tv-shows" element={<TVShowsPage />} />
           <Route path="/web-series" element={<WebSeriesPage />} />
+          <Route path="/movie/:id" element={<MovieDetailsPage />} />
         </Routes>
 
         {/* Footer */}

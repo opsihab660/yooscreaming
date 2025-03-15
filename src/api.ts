@@ -60,3 +60,26 @@ export const fetchWebSeries = async (): Promise<Movie[]> => {
     throw error;
   }
 };
+
+export const fetchMovieById = async (id: string): Promise<Movie | undefined> => {
+  try {
+    // Simulate network delay
+    await delay(600);
+    
+    // Combine all movie arrays to search through
+    const allMovies = [...trendingMovies, ...popularMovies, ...webSeries];
+    
+    // Find the movie with the matching ID
+    const movie = allMovies.find(movie => movie.imdbID === id);
+    
+    if (!movie) {
+      throw new Error('Movie not found');
+    }
+    
+    return movie;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to fetch movie details';
+    toast.error(message);
+    throw error;
+  }
+};
