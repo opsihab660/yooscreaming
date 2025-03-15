@@ -1,4 +1,4 @@
-# Movie Website
+# YooScreaming - Movie Website
 
 A modern movie website built with React, TypeScript, and Tailwind CSS.
 
@@ -54,4 +54,4 @@ npm run dev
 
 ## Customization
 
-You can customize the movie data by editing the `src/data/movies.ts` file. Add your own movies, update existing ones, or remove movies you don't want to display. 
+You can customize the movie data by editing the `src/data/movies.ts` file. Add your own movies, update existing ones, or remove movies you don't want to display.
