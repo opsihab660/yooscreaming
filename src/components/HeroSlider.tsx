@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Play, ChevronRight, ChevronLeft } from 'lucide-react';
 import { HeroSliderSkeleton } from './SkeletonLoader';
 
@@ -34,13 +34,23 @@ const HeroSlider: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading
+  // Preload images
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const preloadImages = async () => {
+      const imagePromises = slides.map((slide) => {
+        return new Promise<number>((resolve) => {
+          const img = new Image();
+          img.src = slide.image;
+          img.onload = () => resolve(slide.id);
+          img.onerror = () => resolve(slide.id); // Still resolve on error to avoid blocking
+        });
+      });
+      
+      await Promise.all(imagePromises);
       setIsLoading(false);
-    }, 1500); // Simulate 1.5s loading time
+    };
     
-    return () => clearTimeout(timer);
+    preloadImages();
   }, []);
 
   // Auto slide functionality
@@ -54,17 +64,17 @@ const HeroSlider: React.FC = () => {
     return () => clearInterval(interval);
   }, [isLoading]);
 
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
-  };
+  }, []);
 
-  const goToPrevSlide = () => {
+  const goToPrevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
+  }, []);
 
-  const goToNextSlide = () => {
+  const goToNextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
+  }, []);
 
   if (isLoading) {
     return <HeroSliderSkeleton />;
@@ -78,13 +88,15 @@ const HeroSlider: React.FC = () => {
           <div 
             key={slide.id}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              index === currentSlide ? 'opacity-100' : 'opacity-0 z-0'
             }`}
           >
             <img 
               src={slide.image}
               className="w-full h-full object-cover"
               alt={slide.title}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "auto"}
             />
             
             {/* Decorative SVG Overlay */}
@@ -165,6 +177,7 @@ const HeroSlider: React.FC = () => {
       <button 
         onClick={goToPrevSlide}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300"
+        aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
@@ -172,12 +185,13 @@ const HeroSlider: React.FC = () => {
       <button 
         onClick={goToNextSlide}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300"
+        aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6" />
       </button>
 
       {/* Slide indicators */}
-      <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
+      <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 z-2 flex space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
