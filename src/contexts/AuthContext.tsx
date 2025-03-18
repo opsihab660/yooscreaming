@@ -58,6 +58,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signInWithGoogle = async () => {
     try {
       setLoading(true);
+      
+      // Configure Google provider
+      googleProvider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
       const result = await signInWithPopup(auth, googleProvider);
       
       // Save user to MongoDB with device info and IP
@@ -66,9 +72,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       
       toast.success('Successfully signed in!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error signing in with Google:', error);
-      toast.error('Failed to sign in with Google');
+      
+      // Handle specific error cases
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Sign in was cancelled. Please try again.');
+      } else if (error.code === 'auth/popup-blocked') {
+        toast.error('Pop-up was blocked by your browser. Please allow pop-ups for this site.');
+      } else {
+        toast.error('Failed to sign in with Google');
+      }
     } finally {
       setLoading(false);
     }
