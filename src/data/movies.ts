@@ -1,169 +1,279 @@
 import { Movie } from '../types';
 
-// Trending Movies
-export const trendingMovies: Movie[] = [
-  {
-    imdbID: 't1',
-    Title: 'The Avengers',
-    Year: '2012',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BZTBhNjkzNzAtMjI3OC00NzQyLWIyNWItMzlkYmVmOGQxYTI1XkEyXkFqcGc@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Adventure'
-  },
-  {
-    imdbID: 't2',
-    Title: 'Inception',
-    Year: '2010',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Sci-Fi, Action'
-  },
-  {
-    imdbID: 't3',
-    Title: 'The Dark Knight',
-    Year: '2008',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Crime, Drama'
-  },
-  {
-    imdbID: 't4',
-    Title: 'Interstellar',
-    Year: '2014',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Adventure, Drama, Sci-Fi'
-  },
-  {
-    imdbID: 't5',
-    Title: 'Pulp Fiction',
-    Year: '1994',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Crime, Drama'
-  },
-  {
-    imdbID: 't6',
-    Title: 'The Shawshank Redemption',
-    Year: '1994',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Drama'
-  }
-];
+// Sample movie data from the provided JSON
+export const sampleMovie: Movie = {
+  _id: "67d99db46eee1a100f8bd94c",
+  video_url: "https://vgorigin.hakunaymatata.com/cms/87233869f345c5c4a879e2201acf2853.mp4?Expires=1743486372&KeyName=wefeed&Signature=a15Nd0pUbiqeB6NLbDpIBAMe614VwloO-0d3tJLqjJnQ1vGkUoS5_DGqOZywS1YRlRUCH_QrdAkT9YBSKhCvAQ",
+  image: "http://localhost:5000/1742314932492.png",
+  title: "example",
+  description: "example\r\n## example",
+  release_date: "2000-11-12",
+  genre: [
+    "Action",
+    "Adventure",
+    "Animation",
+    "Mystery",
+    "Romance"
+  ],
+  runtime: "2h 40m",
+  type: "Movie",
+  tags: [
+    "Popular",
+    "Trending",
+    "Web Series",
+    "Exclusive",
+    "Award Winning",
+    "Blockbuster"
+  ],
+  like_count: 34,
+  cast: [
+    "sakib",
+    "rabbi",
+    "sihab"
+  ],
+  country: "Bangladesh",
+  created_at: "2025-03-18T16:22:12.498Z",
+  updated_at: "2025-03-18T16:22:12.498Z",
+  __v: 0,
+  // Adding these properties for backward compatibility
+  imdbID: "67d99db46eee1a100f8bd94c", 
+  Title: "example",
+  Year: "2000",
+  Poster: "http://localhost:5000/1742314932492.png",
+  Type: "Movie"
+};
 
-// Popular Movies
-export const popularMovies: Movie[] = [
-  {
-    imdbID: 'p1',
-    Title: 'Dune',
-    Year: '2021',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Adventure, Drama'
-  },
-  {
-    imdbID: 'p2',
-    Title: 'No Time to Die',
-    Year: '2021',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BYWQ2NzQ1NjktMzNkNS00MGY1LTgwMmMtYTllYTI5YzNmMmE0XkEyXkFqcGdeQXVyMjM4NTM5NDY@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Adventure, Thriller'
-  },
-  {
-    imdbID: 'p3',
-    Title: 'The Batman',
-    Year: '2022',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BMDdmMTBiNTYtMDIzNi00NGVlLWIzMDYtZTk3MTQ3NGQxZGEwXkEyXkFqcGdeQXVyMzMwOTU5MDk@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Crime, Drama'
-  },
-  {
-    imdbID: 'p4',
-    Title: 'Top Gun: Maverick',
-    Year: '2022',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BZWYzOGEwNTgtNWU3NS00ZTQ0LWJkODUtMmVhMjIwMjA1ZmQwXkEyXkFqcGdeQXVyMjkwOTAyMDU@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Drama'
-  },
-  {
-    imdbID: 'p5',
-    Title: 'Spider-Man: No Way Home',
-    Year: '2021',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Adventure, Fantasy'
-  },
-  {
-    imdbID: 'p6',
-    Title: 'The Matrix Resurrections',
-    Year: '2021',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BMGJkNDJlZWUtOGM1Ny00YjNkLThiM2QtY2ZjMzQxMTIxNWNmXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg',
-    Type: 'movie',
-    Genre: 'Action, Sci-Fi'
-  }
-];
+// Dune: Part Two (2024)
+export const dunePart2: Movie = {
+  _id: "dune2_2024",
+  video_url: "https://www.youtube.com/watch?v=Way9Dexny3I",
+  image: "https://m.media-amazon.com/images/M/MV5BODI0YjNhNjUtYjM0My00MTUwLWFlYTMtMWI2NGUzYjhkZWY5XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
+  title: "Dune: Part Two",
+  description: "Paul Atreides unites with the Fremen while on a warpath of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the universe, he endeavors to prevent a terrible future.",
+  release_date: "2024-03-01",
+  genre: [
+    "Action",
+    "Adventure",
+    "Drama",
+    "Sci-Fi"
+  ],
+  runtime: "2h 46m",
+  type: "Movie",
+  tags: [
+    "Popular",
+    "Trending",
+    "Epic",
+    "Blockbuster",
+    "Award Winning"
+  ],
+  like_count: 85,
+  cast: [
+    "Timothée Chalamet",
+    "Zendaya",
+    "Rebecca Ferguson",
+    "Josh Brolin",
+    "Austin Butler",
+    "Florence Pugh",
+    "Dave Bautista",
+    "Christopher Walken"
+  ],
+  country: "United States",
+  created_at: "2024-03-18T16:22:12.498Z",
+  updated_at: "2024-03-18T16:22:12.498Z",
+  __v: 0,
+  imdbID: "tt15239678",
+  Title: "Dune: Part Two",
+  Year: "2024",
+  Poster: "https://m.media-amazon.com/images/M/MV5BODI0YjNhNjUtYjM0My00MTUwLWFlYTMtMWI2NGUzYjhkZWY5XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
+  Type: "Movie"
+};
 
-// Web Series
-export const webSeries: Movie[] = [
-  {
-    imdbID: 'w1',
-    Title: 'Stranger Things',
-    Year: '2016-',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BMDZkYmVhNjMtNWU4MC00MDQxLWE3MjYtZGMzZWI1ZjhlOWJmXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg',
-    Type: 'series',
-    Genre: 'Drama, Fantasy, Horror'
-  },
-  {
-    imdbID: 'w2',
-    Title: 'The Witcher',
-    Year: '2019-',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BN2FiOWU4YzYtMzZiOS00MzcyLTlkOGEtOTgwZmEwMzAxMzA3XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg',
-    Type: 'series',
-    Genre: 'Action, Adventure, Fantasy'
-  },
-  {
-    imdbID: 'w3',
-    Title: 'Breaking Bad',
-    Year: '2008-2013',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BYmQ4YWMxYjUtNjZmYi00MDQ1LWFjMjMtNjA5ZDdiYjdiODU5XkEyXkFqcGdeQXVyMTMzNDExODE5._V1_.jpg',
-    Type: 'series',
-    Genre: 'Crime, Drama, Thriller'
-  },
-  {
-    imdbID: 'w4',
-    Title: 'Game of Thrones',
-    Year: '2011-2019',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BYTRiNDQwYzAtMzVlZS00NTI5LWJjYjUtMzkwNTUzMWMxZTllXkEyXkFqcGdeQXVyNDIzMzcwNjc@._V1_.jpg',
-    Type: 'series',
-    Genre: 'Action, Adventure, Drama'
-  },
-  {
-    imdbID: 'w5',
-    Title: 'The Mandalorian',
-    Year: '2019-',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BZjRlMzM3N2MtOTZiZC00NzQ4LWI2NDMtZmZiMWMwYmM2OTU4XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg',
-    Type: 'series',
-    Genre: 'Action, Adventure, Fantasy'
-  },
-  {
-    imdbID: 'w6',
-    Title: 'Money Heist',
-    Year: '2017-2021',
-    Poster: 'https://m.media-amazon.com/images/M/MV5BODI0ZTljYTMtODQ1NC00NmI0LTk1YWUtN2FlNDM1MDExMDlhXkEyXkFqcGdeQXVyMTM0NTUzNDIy._V1_.jpg',
-    Type: 'series',
-    Genre: 'Action, Crime, Drama'
-  }
-];
+// Kung Fu Panda 4 (2024)
+export const kungFuPanda4: Movie = {
+  _id: "kfp4_2024",
+  video_url: "https://www.youtube.com/watch?v=_inKs4eeHiI",
+  image: "https://m.media-amazon.com/images/M/MV5BYzI0YzM0OWUtNTYxYy00MTEzLTI4ZjktYzVkOGQxNDM4NDYyXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg",
+  title: "Kung Fu Panda 4",
+  description: "After Po is tapped to become the Spiritual Leader of the Valley of Peace, he needs to find and train a new Dragon Warrior, while a wicked sorceress plans to re-summon all the master villains whom Po has vanquished to the spirit realm.",
+  release_date: "2024-03-08",
+  genre: [
+    "Animation",
+    "Action",
+    "Adventure",
+    "Comedy",
+    "Family"
+  ],
+  runtime: "1h 34m",
+  type: "Movie",
+  tags: [
+    "Popular",
+    "Trending",
+    "Family Friendly",
+    "Animation",
+    "Blockbuster"
+  ],
+  like_count: 78,
+  cast: [
+    "Jack Black",
+    "Awkwafina",
+    "Viola Davis",
+    "Dustin Hoffman",
+    "Bryan Cranston",
+    "James Hong",
+    "Ian McShane"
+  ],
+  country: "United States",
+  created_at: "2024-03-18T16:22:12.498Z",
+  updated_at: "2024-03-18T16:22:12.498Z",
+  __v: 0,
+  imdbID: "tt21692408",
+  Title: "Kung Fu Panda 4",
+  Year: "2024",
+  Poster: "https://m.media-amazon.com/images/M/MV5BYzI0YzM0OWUtNTYxYy00MTEzLTI4ZjktYzVkOGQxNDM4NDYyXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_.jpg",
+  Type: "Movie"
+};
 
-// Function to search movies by term
-export const searchMovies = (searchTerm: string): Movie[] => {
-  const term = searchTerm.toLowerCase();
+// Ghostbusters: Frozen Empire (2024)
+export const ghostbustersFrozenEmpire: Movie = {
+  _id: "ghostbusters_fe_2024",
+  video_url: "https://www.youtube.com/watch?v=EBV3zZTINjI",
+  image: "https://m.media-amazon.com/images/M/MV5BNDI5YjY1NzktODJlMC00MzM5LWJkZTctYmY2MzJhZWNiYzhjXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg",
+  title: "Ghostbusters: Frozen Empire",
+  description: "When the discovery of an ancient artifact unleashes an evil force, Ghostbusters new and old must join forces to protect their home and save the world from a second ice age.",
+  release_date: "2024-03-22",
+  genre: [
+    "Comedy",
+    "Fantasy",
+    "Adventure",
+    "Supernatural"
+  ],
+  runtime: "1h 55m",
+  type: "Movie",
+  tags: [
+    "Popular",
+    "Trending",
+    "Adventure",
+    "Supernatural",
+    "Franchise"
+  ],
+  like_count: 62,
+  cast: [
+    "Paul Rudd",
+    "Carrie Coon",
+    "Finn Wolfhard",
+    "Mckenna Grace", 
+    "Bill Murray",
+    "Dan Aykroyd",
+    "Ernie Hudson"
+  ],
+  country: "United States",
+  created_at: "2024-03-18T16:22:12.498Z",
+  updated_at: "2024-03-18T16:22:12.498Z",
+  __v: 0,
+  imdbID: "tt21235248",
+  Title: "Ghostbusters: Frozen Empire",
+  Year: "2024",
+  Poster: "https://m.media-amazon.com/images/M/MV5BNDI5YjY1NzktODJlMC00MzM5LWJkZTctYmY2MzJhZWNiYzhjXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg",
+  Type: "Movie"
+};
+
+// Godzilla x Kong: The New Empire (2024)
+export const godzillaXKong: Movie = {
+  _id: "gxk_tne_2024",
+  video_url: "https://www.youtube.com/watch?v=4flHxmEnlY8",
+  image: "https://m.media-amazon.com/images/M/MV5BNzI4YzlkYmYtNTExNS00YzI2LWI5NWEtMjY4YTBlOGRjM2EzXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_FMjpg_UX1000_.jpg",
+  title: "Godzilla x Kong: The New Empire",
+  description: "Two ancient titans, Godzilla and Kong, clash in an epic battle as humans unravel their intertwined origins and connection to Skull Island's mysteries.",
+  release_date: "2024-03-29",
+  genre: [
+    "Action",
+    "Adventure",
+    "Sci-Fi",
+    "Fantasy"
+  ],
+  runtime: "1h 55m",
+  type: "Movie",
+  tags: [
+    "Popular",
+    "Trending",
+    "Blockbuster",
+    "Franchise",
+    "Action"
+  ],
+  like_count: 61,
+  cast: [
+    "Rebecca Hall",
+    "Brian Tyree Henry",
+    "Dan Stevens",
+    "Kaylee Hottle",
+    "Alex Ferns",
+    "Fala Chen"
+  ],
+  country: "United States",
+  created_at: "2024-03-18T16:22:12.498Z",
+  updated_at: "2024-03-18T16:22:12.498Z",
+  __v: 0,
+  imdbID: "tt14539740",
+  Title: "Godzilla x Kong: The New Empire",
+  Year: "2024",
+  Poster: "https://m.media-amazon.com/images/M/MV5BNzI4YzlkYmYtNTExNS00YzI2LWI5NWEtMjY4YTBlOGRjM2EzXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_FMjpg_UX1000_.jpg",
+  Type: "Movie"
+};
+
+// A Real Pain (2024)
+export const aRealPain: Movie = {
+  _id: "arealPain_2024",
+  video_url: "https://www.youtube.com/watch?v=8K8NlNJsQXE",
+  image: "https://m.media-amazon.com/images/M/MV5BODUxMjA5MDgtZTBiYS00Y2M1LTgzNTEtY2JkMmRmZDc2YWY2XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+  title: "A Real Pain",
+  description: "Mismatched cousins David and Benji reunite for a tour through Poland to honor their beloved grandmother. The adventure takes a turn when the odd-couple's old tensions resurface against the backdrop of their family history.",
+  release_date: "2024-11-15",
+  genre: [
+    "Comedy",
+    "Drama"
+  ],
+  runtime: "1h 29m",
+  type: "Movie",
+  tags: [
+    "Award Winning",
+    "Coming Soon",
+    "Indie",
+    "Drama",
+    "Comedy"
+  ],
+  like_count: 81,
+  cast: [
+    "Jesse Eisenberg",
+    "Kieran Culkin",
+    "Will Sharpe",
+    "Daniel Oreskes"
+  ],
+  country: "United States",
+  created_at: "2024-03-18T16:22:12.498Z",
+  updated_at: "2024-03-18T16:22:12.498Z",
+  __v: 0,
+  imdbID: "tt18911996",
+  Title: "A Real Pain",
+  Year: "2024",
+  Poster: "https://m.media-amazon.com/images/M/MV5BODUxMjA5MDgtZTBiYS00Y2M1LTgzNTEtY2JkMmRmZDc2YWY2XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+  Type: "Movie"
+};
+
+// Create movie collections
+export const trendingMovies: Movie[] = [dunePart2, kungFuPanda4, ghostbustersFrozenEmpire, godzillaXKong, aRealPain, sampleMovie];
+export const popularMovies: Movie[] = [sampleMovie, dunePart2, kungFuPanda4, ghostbustersFrozenEmpire, godzillaXKong];
+export const webSeries: Movie[] = [{ ...sampleMovie, type: "Series", Type: "series" }];
+
+// Search function
+export const searchMovies = (query: string): Movie[] => {
   const allMovies = [...trendingMovies, ...popularMovies, ...webSeries];
+  if (!query) return allMovies;
   
+  const lowerCaseQuery = query.toLowerCase();
   return allMovies.filter(movie => 
-    movie.Title.toLowerCase().includes(term) || 
-    movie.Year.toLowerCase().includes(term) ||
-    (movie.Genre && movie.Genre.toLowerCase().includes(term))
+    movie.title.toLowerCase().includes(lowerCaseQuery) ||
+    movie.description?.toLowerCase().includes(lowerCaseQuery) ||
+    movie.genre?.some(g => g.toLowerCase().includes(lowerCaseQuery)) ||
+    movie.tags?.some(t => t.toLowerCase().includes(lowerCaseQuery))
   );
-}; 
+};

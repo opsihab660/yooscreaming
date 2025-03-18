@@ -2,6 +2,13 @@ import { User as FirebaseUser } from 'firebase/auth';
 import axios from 'axios';
 import { collectDeviceInfo } from './deviceInfoService';
 
+// Create axios instance with base URL
+const api = axios.create({
+  baseURL: import.meta.env.DEV 
+    ? '/api' // In development, this will use the proxy in vite.config.ts
+    : 'https://yooscreaming-server.vercel.app/api' // In production, use absolute URL
+});
+
 // Function to save user to MongoDB
 export const saveUserToDatabase = async (user: FirebaseUser) => {
   try {
@@ -24,7 +31,7 @@ export const saveUserToDatabase = async (user: FirebaseUser) => {
     };
 
     // Make API call to save user data
-    const response = await axios.post('/api/users', userData);
+    const response = await api.post('/users', userData);
     return response.data;
   } catch (error) {
     console.error('Error saving user to database:', error);
@@ -51,7 +58,7 @@ export const updateLoginInfo = async (uid: string) => {
       }
     };
 
-    const response = await axios.put(`/api/users/${uid}/login-info`, loginData);
+    const response = await api.put(`/users/${uid}/login-info`, loginData);
     return response.data;
   } catch (error) {
     console.error('Error updating login information:', error);
@@ -62,7 +69,7 @@ export const updateLoginInfo = async (uid: string) => {
 // Function to get user data from MongoDB
 export const getUserData = async (uid: string) => {
   try {
-    const response = await axios.get(`/api/users/${uid}`);
+    const response = await api.get(`/users/${uid}`);
     return response.data;
   } catch (error) {
     console.error('Error getting user data:', error);
@@ -73,7 +80,7 @@ export const getUserData = async (uid: string) => {
 // Function to update user data in MongoDB
 export const updateUserData = async (uid: string, data: any) => {
   try {
-    const response = await axios.put(`/api/users/${uid}`, data);
+    const response = await api.put(`/users/${uid}`, data);
     return response.data;
   } catch (error) {
     console.error('Error updating user data:', error);
@@ -84,7 +91,7 @@ export const updateUserData = async (uid: string, data: any) => {
 // Function to change display name
 export const changeDisplayName = async (uid: string, newDisplayName: string) => {
   try {
-    const response = await axios.put(`/api/users/${uid}/display-name`, { 
+    const response = await api.put(`/users/${uid}/display-name`, { 
       displayName: newDisplayName 
     });
     return response.data;

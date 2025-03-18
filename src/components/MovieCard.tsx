@@ -181,11 +181,27 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
   const handleSimilarMovieClick = (similarMovie: any) => {
     // Convert the similar movie to the Movie type format
     const movieDetails: Movie = {
+      _id: similarMovie.id,
+      video_url: "",
+      image: similarMovie.Poster,
+      title: similarMovie.Title,
+      description: `A ${similarMovie.Type} released in ${similarMovie.Year}`,
+      release_date: `${similarMovie.Year}-01-01`,
+      genre: [],
+      runtime: "2h 0m",
+      type: similarMovie.Type,
+      tags: [],
+      like_count: 0,
+      cast: [],
+      country: "",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      __v: 0,
+      imdbID: similarMovie.id,
       Title: similarMovie.Title,
       Year: similarMovie.Year,
-      imdbID: similarMovie.id,
-      Type: similarMovie.Type,
-      Poster: similarMovie.Poster
+      Poster: similarMovie.Poster,
+      Type: similarMovie.Type
     };
     
     // Close current modal and open new one with a slight delay
@@ -202,6 +218,22 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
 
   const currentMovie = selectedMovie || movie;
   const currentImageUrl = imageUrl(currentMovie);
+
+  const handleWatchNow = () => {
+    // Get video URL for the movie
+    const videoUrl = currentMovie.video_url || "https://vgorigin.hakunaymatata.com/cms/87233869f345c5c4a879e2201acf2853.mp4?Expires=1743486372&KeyName=wefeed&Signature=a15Nd0pUbiqeB6NLbDpIBAMe614VwloO-0d3tJLqjJnQ1vGkUoS5_DGqOZywS1YRlRUCH_QrdAkT9YBSKhCvAQ";
+    
+    // Close modal
+    startCloseModal();
+    
+    // Navigate to video player page with movie details
+    navigate('/video-player', { 
+      state: { 
+        videoUrl, 
+        title: currentMovie.title || currentMovie.Title 
+      } 
+    });
+  };
 
   return (
     <>
@@ -229,28 +261,28 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
 
         {/* Overlay with content */}
         <div 
-          className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end p-4 transition-all duration-300 z-20"
+          className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end p-4 transition-all duration-300 z-20 opacity-0 group-hover/card:opacity-100"
         >
           {/* Play button - hidden by default, shown on hover */}
           <div 
-            className="flex justify-center transition-all duration-300 opacity-0 transform translate-y-4 group-hover/card:opacity-100 group-hover/card:translate-y-0"
+            className="flex justify-center transition-all duration-300 transform translate-y-4 group-hover/card:translate-y-0"
           >
             <Play className="w-12 h-12 text-red-500 mb-4" />
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-semibold mb-1 relative z-20">
+          <h3 className="text-lg font-semibold mb-1 relative z-20 transform translate-y-2 group-hover/card:translate-y-0 transition-all duration-300">
             {currentMovie.Title}
           </h3>
 
           {/* Year and Type */}
-          <p className="text-sm text-gray-300 mb-2 relative z-20">
+          <p className="text-sm text-gray-300 mb-2 relative z-20 transform translate-y-2 group-hover/card:translate-y-0 transition-all duration-300">
             {currentMovie.Year} • {currentMovie.Type}
           </p>
 
           {/* Description - hidden by default, shown on hover */}
           <div 
-            className="overflow-hidden transition-all duration-300 max-h-0 opacity-0 group-hover/card:max-h-20 group-hover/card:opacity-100 relative z-20"
+            className="overflow-hidden transition-all duration-300 max-h-0 group-hover/card:max-h-20 relative z-20"
           >
             <p className="text-xs text-gray-400 line-clamp-3">
               {`A ${currentMovie.Type} released in ${currentMovie.Year}, featuring an engaging storyline and memorable characters.`}
@@ -362,10 +394,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
                         : 'fadeIn 0.6s ease-out 0.5s both' 
                     }}
                   >
-                    {currentMovie.Type === 'movie' 
+                    {currentMovie.description || (currentMovie.Type === 'movie' 
                       ? `${currentMovie.Title} is a captivating ${currentMovie.Genre || ''} film released in ${currentMovie.Year}. With its engaging storyline and memorable characters, this movie has garnered critical acclaim for its storytelling, performances, and visual aesthetics.`
                       : `${currentMovie.Title} is a captivating ${currentMovie.Genre || ''} ${currentMovie.Type} released in ${currentMovie.Year}. With its engaging storyline and memorable characters, this ${currentMovie.Type} has garnered critical acclaim for its storytelling, performances, and visual aesthetics.`
-                    }
+                    )}
                   </p>
                   
                   <div 
@@ -382,17 +414,67 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
                     </div>
                     <div>
                       <p className="text-gray-400 text-sm">Genre</p>
-                      <p>{currentMovie.Genre || 'Not specified'}</p>
+                      <p>{currentMovie.genre && currentMovie.genre.length > 0 
+                        ? currentMovie.genre.join(', ') 
+                        : currentMovie.Genre || 'Not specified'}</p>
                     </div>
                     <div>
                       <p className="text-gray-400 text-sm">Type</p>
-                      <p className="capitalize">{currentMovie.Type}</p>
+                      <p className="capitalize">{currentMovie.type || currentMovie.Type}</p>
                     </div>
                     <div>
                       <p className="text-gray-400 text-sm">Runtime</p>
-                      <p>120 minutes</p>
+                      <p>{currentMovie.runtime || '120 minutes'}</p>
                     </div>
+                    {currentMovie.country && (
+                      <div>
+                        <p className="text-gray-400 text-sm">Country</p>
+                        <p>{currentMovie.country}</p>
+                      </div>
+                    )}
+                    {currentMovie.like_count !== undefined && (
+                      <div>
+                        <p className="text-gray-400 text-sm">Likes</p>
+                        <p>{currentMovie.like_count}</p>
+                      </div>
+                    )}
                   </div>
+                  
+                  {/* Tags */}
+                  {currentMovie.tags && currentMovie.tags.length > 0 && (
+                    <div className="mb-4" style={{ 
+                      animation: isClosing 
+                        ? 'fadeOut 0.2s ease-out forwards'
+                        : 'fadeIn 0.6s ease-out 0.65s both' 
+                    }}>
+                      <p className="text-gray-400 text-sm mb-2">Tags</p>
+                      <div className="flex flex-wrap gap-2">
+                        {currentMovie.tags.map((tag, index) => (
+                          <span key={index} className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Cast */}
+                  {currentMovie.cast && currentMovie.cast.length > 0 && (
+                    <div className="mb-4" style={{ 
+                      animation: isClosing 
+                        ? 'fadeOut 0.2s ease-out forwards'
+                        : 'fadeIn 0.6s ease-out 0.7s both' 
+                    }}>
+                      <p className="text-gray-400 text-sm mb-2">Cast</p>
+                      <div className="flex flex-wrap gap-2">
+                        {currentMovie.cast.map((actor, index) => (
+                          <span key={index} className="bg-gray-800 text-gray-300 text-xs px-2 py-1 rounded">
+                            {actor}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   
                   <div 
                     className="flex space-x-3"
@@ -402,7 +484,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick }) => {
                         : 'slideUp 0.5s ease-out 0.7s both' 
                     }}
                   >
-                    <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full transition-colors cursor-pointer">
+                    <button 
+                      onClick={handleWatchNow}
+                      className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full transition-colors cursor-pointer"
+                    >
                       Watch Now
                     </button>
                     <button 

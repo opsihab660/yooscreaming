@@ -61,7 +61,7 @@ const MovieDetailsPage: React.FC = () => {
       <div 
         className="relative w-full h-[70vh] bg-cover bg-center"
         style={{ 
-          backgroundImage: `url(${movie.Poster})`,
+          backgroundImage: `url(${movie.image || movie.Poster})`,
           backgroundPosition: 'center 20%'
         }}
       >
@@ -71,25 +71,22 @@ const MovieDetailsPage: React.FC = () => {
         {/* Content Container */}
         <div className="container mx-auto px-4 relative h-full flex flex-col justify-end pb-16">
           <div className="max-w-4xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-3">{movie.Title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-3">{movie.title || movie.Title}</h1>
             
             <div className="flex items-center gap-2 text-sm mb-2">
-              <span className="opacity-75">{movie.Year}</span>
+              <span className="opacity-75">{movie.release_date ? new Date(movie.release_date).getFullYear() : movie.Year}</span>
               <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-              <span className="opacity-75">{movie.Type === 'movie' ? 'Movie' : movie.Type}</span>
-              {movie.Genre && (
+              <span className="opacity-75">{movie.type || movie.Type}</span>
+              {movie.genre && movie.genre.length > 0 && (
                 <>
                   <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
-                  <span className="opacity-75">{movie.Genre}</span>
+                  <span className="opacity-75">{movie.genre.join(', ')}</span>
                 </>
               )}
             </div>
             
             <p className="text-gray-300 mb-6 max-w-2xl">
-              {movie.Type === 'movie' 
-                ? `${movie.Title} is a captivating ${movie.Genre} film released in ${movie.Year}. With its engaging storyline and memorable characters, this movie has garnered critical acclaim for its storytelling, performances, and visual aesthetics.`
-                : `${movie.Title} is a captivating ${movie.Genre} ${movie.Type} released in ${movie.Year}. With its engaging storyline and memorable characters, this ${movie.Type} has garnered critical acclaim for its storytelling, performances, and visual aesthetics.`
-              }
+              {movie.description || `${movie.title || movie.Title} is a captivating ${movie.genre ? movie.genre.join(', ') : movie.Genre} ${movie.type || movie.Type} released in ${movie.release_date ? new Date(movie.release_date).getFullYear() : movie.Year}.`}
             </p>
             
             <div className="flex flex-wrap gap-3">
@@ -116,30 +113,45 @@ const MovieDetailsPage: React.FC = () => {
           {/* Left Column - Details */}
           <div className="w-full md:w-2/3">
             <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-800 mb-8">
-              <h2 className="text-xl font-bold mb-4">About {movie.Title}</h2>
+              <h2 className="text-xl font-bold mb-4">About {movie.title || movie.Title}</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div>
-                  <p className="text-gray-400 text-sm">Release Year</p>
-                  <p>{movie.Year}</p>
+                  <p className="text-gray-400 text-sm">Release Date</p>
+                  <p>{movie.release_date || movie.Year}</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm">Genre</p>
-                  <p>{movie.Genre || 'Not specified'}</p>
+                  <p>{movie.genre ? movie.genre.join(', ') : movie.Genre || 'Not specified'}</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm">Type</p>
-                  <p className="capitalize">{movie.Type}</p>
+                  <p className="capitalize">{movie.type || movie.Type}</p>
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm">Runtime</p>
-                  <p>120 minutes</p>
+                  <p>{movie.runtime || '120 minutes'}</p>
                 </div>
+                {movie.country && (
+                  <div>
+                    <p className="text-gray-400 text-sm">Country</p>
+                    <p>{movie.country}</p>
+                  </div>
+                )}
+                {movie.tags && movie.tags.length > 0 && (
+                  <div>
+                    <p className="text-gray-400 text-sm">Tags</p>
+                    <p>{movie.tags.join(', ')}</p>
+                  </div>
+                )}
+                {movie.like_count !== undefined && (
+                  <div>
+                    <p className="text-gray-400 text-sm">Likes</p>
+                    <p>{movie.like_count}</p>
+                  </div>
+                )}
               </div>
               <p className="text-gray-300">
-                {movie.Type === 'movie' 
-                  ? `${movie.Title} takes viewers on an unforgettable journey through ${movie.Genre}. Released in ${movie.Year}, this film showcases exceptional performances and a compelling narrative that keeps audiences engaged from start to finish.`
-                  : `${movie.Title} takes viewers on an unforgettable journey through ${movie.Genre}. Released in ${movie.Year}, this ${movie.Type} showcases exceptional performances and a compelling narrative that keeps audiences engaged from start to finish.`
-                }
+                {movie.description || `${movie.title || movie.Title} takes viewers on an unforgettable journey through ${movie.genre ? movie.genre.join(', ') : movie.Genre || 'various genres'}. Released in ${movie.release_date ? new Date(movie.release_date).getFullYear() : movie.Year}, this ${movie.type || movie.Type} showcases exceptional performances and a compelling narrative that keeps audiences engaged from start to finish.`}
               </p>
             </div>
             
@@ -147,15 +159,26 @@ const MovieDetailsPage: React.FC = () => {
             <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
               <h2 className="text-xl font-bold mb-4">Cast & Crew</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[1, 2, 3, 4].map((_, index) => (
-                  <div key={index} className="text-center">
-                    <div className="w-20 h-20 rounded-full bg-gray-700 mx-auto mb-2 overflow-hidden">
-                      <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800"></div>
+                {movie.cast && movie.cast.length > 0 ? 
+                  movie.cast.map((actor, index) => (
+                    <div key={index} className="text-center">
+                      <div className="w-20 h-20 rounded-full bg-gray-700 mx-auto mb-2 overflow-hidden">
+                        <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800"></div>
+                      </div>
+                      <p className="font-medium">{actor}</p>
+                      <p className="text-sm text-gray-400">Actor</p>
                     </div>
-                    <p className="font-medium">Actor Name</p>
-                    <p className="text-sm text-gray-400">Character</p>
-                  </div>
-                ))}
+                  )) :
+                  [1, 2, 3, 4].map((_, index) => (
+                    <div key={index} className="text-center">
+                      <div className="w-20 h-20 rounded-full bg-gray-700 mx-auto mb-2 overflow-hidden">
+                        <div className="w-full h-full bg-gradient-to-br from-gray-600 to-gray-800"></div>
+                      </div>
+                      <p className="font-medium">Actor Name</p>
+                      <p className="text-sm text-gray-400">Character</p>
+                    </div>
+                  ))
+                }
               </div>
               <div className="mt-6 pt-6 border-t border-gray-800">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -181,8 +204,8 @@ const MovieDetailsPage: React.FC = () => {
             <div className="sticky top-24">
               <div className="aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border-2 border-gray-800 mb-4">
                 <img 
-                  src={movie.Poster} 
-                  alt={movie.Title} 
+                  src={movie.image || movie.Poster} 
+                  alt={movie.title || movie.Title} 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -191,14 +214,14 @@ const MovieDetailsPage: React.FC = () => {
                   <p className="text-sm text-gray-400">Rating</p>
                   <div className="flex items-center">
                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                    <span className="ml-1 font-bold">8.5/10</span>
+                    <span className="ml-1 font-bold">{movie.like_count || 0}/10</span>
                   </div>
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Duration</p>
                   <div className="flex items-center">
                     <Clock className="w-4 h-4 text-gray-400" />
-                    <span className="ml-1">120 min</span>
+                    <span className="ml-1">{movie.runtime || '120 min'}</span>
                   </div>
                 </div>
               </div>
